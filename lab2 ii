@@ -1,0 +1,31 @@
+public class ShareTrader {
+    private static int maxProfit;
+
+    public static int findMaxProfit(int[] prices) {
+        int n = prices.length;
+        if (n < 2) {
+            System.out.println("Insufficient data to perform trading.");
+            return 0;
+        }
+
+        int[] profit = new int[n];
+
+        for (int i = 1; i < 3; i++) {
+            int maxDiff = -prices[0];
+            for (int j = 1; j < n; j++) {
+                int temp = profit[j];
+                profit[j] = Math.max(profit[j - 1], prices[j] + maxDiff);
+                maxDiff = Math.max(maxDiff, temp - prices[j]);
+            }
+        }
+
+        maxProfit = profit[n - 1];
+        return maxProfit;
+    }
+
+    public static void main(String[] args) {
+        int[] prices = {2, 30, 15, 10, 8, 25, 80};
+        findMaxProfit(prices);
+        System.out.println("Maximum Profit: " + maxProfit);
+    }
+}
