@@ -1,0 +1,146 @@
+public class AlphabetWarGame {
+
+    // Default strengths
+    private static final int DEFAULT_STRENGTH_W = 4;
+    private static final int DEFAULT_STRENGTH_P = 3;
+    private static final int DEFAULT_STRENGTH_B = 2;
+    private static final int DEFAULT_STRENGTH_S = 1;
+    private static final int DEFAULT_STRENGTH_M = 4;
+    private static final int DEFAULT_STRENGTH_Q = 3;
+    private static final int DEFAULT_STRENGTH_D = 2;
+    private static final int DEFAULT_STRENGTH_Z = 1;
+
+    // Custom strengths
+    private int strengthW;
+    private int strengthP;
+    private int strengthB;
+    private int strengthS;
+    private int strengthM;
+    private int strengthQ;
+    private int strengthD;
+    private int strengthZ;
+
+    // Constructors with default and custom strengths
+    public AlphabetWarGame() {
+        this(DEFAULT_STRENGTH_W, DEFAULT_STRENGTH_P, DEFAULT_STRENGTH_B, DEFAULT_STRENGTH_S,
+                DEFAULT_STRENGTH_M, DEFAULT_STRENGTH_Q, DEFAULT_STRENGTH_D, DEFAULT_STRENGTH_Z);
+    }
+
+    public AlphabetWarGame(int strengthW, int strengthP, int strengthB, int strengthS,
+                           int strengthM, int strengthQ, int strengthD, int strengthZ) {
+        this.strengthW = strengthW;
+        this.strengthP = strengthP;
+        this.strengthB = strengthB;
+        this.strengthS = strengthS;
+        this.strengthM = strengthM;
+        this.strengthQ = strengthQ;
+        this.strengthD = strengthD;
+        this.strengthZ = strengthZ;
+    }
+
+    // Method to determine the winner when passing a single word
+    public void determineWinner(String word) {
+        int leftScore = 0;
+        int rightScore = 0;
+
+        for (char c : word.toCharArray()) {
+            switch (c) {
+                case 'w':
+                    leftScore += strengthW;
+                    break;
+                case 'p':
+                    leftScore += strengthP;
+                    break;
+                case 'b':
+                    leftScore += strengthB;
+                    break;
+                case 's':
+                    leftScore += strengthS;
+                    break;
+                case 'm':
+                    rightScore += strengthM;
+                    break;
+                case 'q':
+                    rightScore += strengthQ;
+                    break;
+                case 'd':
+                    rightScore += strengthD;
+                    break;
+                case 'z':
+                    rightScore += strengthZ;
+                    break;
+            }
+        }
+
+        printWinner(leftScore, rightScore);
+    }
+
+    // Method to determine the winner when passing separate left and right words
+    public void determineWinner(String leftWord, String rightWord) {
+        int leftScore = calculateScore(leftWord, true);
+        int rightScore = calculateScore(rightWord, false);
+
+        printWinner(leftScore, rightScore);
+    }
+
+    private int calculateScore(String word, boolean isLeft) {
+        int score = 0;
+
+        for (char c : word.toCharArray()) {
+            if (isLeft) {
+                switch (c) {
+                    case 'w':
+                        score += strengthW;
+                        break;
+                    case 'p':
+                        score += strengthP;
+                        break;
+                    case 'b':
+                        score += strengthB;
+                        break;
+                    case 's':
+                        score += strengthS;
+                        break;
+                }
+            } else {
+                switch (c) {
+                    case 'm':
+                        score += strengthM;
+                        break;
+                    case 'q':
+                        score += strengthQ;
+                        break;
+                    case 'd':
+                        score += strengthD;
+                        break;
+                    case 'z':
+                        score += strengthZ;
+                        break;
+                }
+            }
+        }
+
+        return score;
+    }
+
+    private void printWinner(int leftScore, int rightScore) {
+        if (leftScore > rightScore) {
+            System.out.println("Left side wins!");
+        } else if (leftScore < rightScore) {
+            System.out.println("Right side wins!");
+        } else {
+            System.out.println("Let's fight again!");
+        }
+    }
+
+    public static void main(String[] args) {
+        AlphabetWarGame defaultGame = new AlphabetWarGame();
+        defaultGame.determineWinner("z");
+
+        AlphabetWarGame customGame = new AlphabetWarGame(5, 3, 2, 1, 4, 3, 2, 1);
+        customGame.determineWinner("zdqmwpbs");
+
+        AlphabetWarGame anotherCustomGame = new AlphabetWarGame();
+        anotherCustomGame.determineWinner("wwwwwwz");
+    }
+}
