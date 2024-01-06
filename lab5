@@ -1,0 +1,104 @@
+Lab-05 Program 01
+interface BankInterface {
+double getBalance();
+double getInterestRate();
+}
+class BankA implements BankInterface {
+private double balance;
+public BankA(double initialBalance) {
+this.balance = initialBalance;
+}
+public double getBalance() {
+return balance;
+}
+public double getInterestRate() {
+return 0.07; 
+}
+}
+class BankB implements BankInterface {
+private double balance;
+public BankB(double initialBalance) {
+this.balance = initialBalance;
+}
+public double getBalance() {
+return balance;
+}
+public double getInterestRate() {
+return 0.074;
+}
+}
+class BankC implements BankInterface {
+private double balance;
+public BankC(double initialBalance) {
+this.balance = initialBalance;
+}
+@Override
+public double getBalance() {
+return balance;
+}
+@Override
+public double getInterestRate() {
+return 0.079; // 7.9% interest rate for BankC
+}
+}
+public class BankInterface {
+public static void main(String[] args) {
+BankA bankA = new BankA(10000);
+BankB bankB = new BankB(150000);
+BankC bankC = new BankC(200000);
+System.out.println("Bank A:");
+System.out.println("Balance: $" + bankA.getBalance());
+System.out.println("Interest Rate: " + (bankA.getInterestRate() * 100) + "%\n");
+System.out.println("Bank B:");
+System.out.println("Balance: $" + bankB.getBalance());
+System.out.println("Interest Rate: " + (bankB.getInterestRate() * 100) + "%\n");
+System.out.println("Bank C:");
+System.out.println("Balance: $" + bankC.getBalance());
+System.out.println("Interest Rate: " + (bankC.getInterestRate() * 100) + "%");
+}
+}
+
+Lab 05 Program 02
+interface WaterConservationSystem {
+int calculateTrappedWater(int[] blockHeights);
+}
+// Abstract class implementing WaterConservationSystem
+abstract class RainySeasonConservation implements WaterConservationSystem {
+}
+class CityBlockConservation extends RainySeasonConservation {
+
+public int calculateTrappedWater(int[] blockHeights) {
+int n = blockHeights.length;
+if (n <= 2) {
+return 0;
+}
+int[] leftMax = new int[n];
+int[] rightMax = new int[n];
+leftMax[0] = blockHeights[0];
+for (int i = 1; i < n; i++) {
+leftMax[i] = Math.max(leftMax[i - 1], blockHeights[i]);
+}
+rightMax[n - 1] = blockHeights[n - 1];
+for (int i = n - 2; i >= 0; i--) {
+rightMax[i] = Math.max(rightMax[i + 1], blockHeights[i]);
+}
+int trappedWater = 0;
+for (int i = 0; i < n; i++) {
+trappedWater += Math.max(0, Math.min(leftMax[i], rightMax[i]) - blockHeights[i]);
+}
+return trappedWater;
+}
+}
+// Main class to test the water conservation system
+public class Main {
+public static void main(String[] args) {
+// Test Case 1
+int[] blocks1 = {3, 0, 0, 2, 0, 4};
+WaterConservationSystem system1 = new CityBlockConservation();
+System.out.println("Test Case 1: " + system1.calculateTrappedWater(blocks1)); 
+// Test Case 2
+int[] blocks2 = {3, 0, 2, 0, 4};
+WaterConservationSystem system2 = new CityBlockConservation();
+System.out.println("Test Case 2: " + system2.calculateTrappedWater(blocks2));
+}
+}
